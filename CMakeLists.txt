@@ -2,15 +2,19 @@ cmake_minimum_required(VERSION 3.5)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# set(PROG_TYPE usbasp)
-set(PROG_TYPE arduino)
+set(PROG_TYPE usbasp)
+# set(PROG_TYPE arduino)
 set(PORT      COM4)
 
 # Variables regarding the AVR chip
-set(MCU    atmega328p)
+set(DEVICE     t2313)
+set(MCU        attiny2313)
+# set(MCU    atmega328p)
 set(F_CPU  16000000UL)
 set(BAUD   9600)
-# add_definitions(-DF_CPU=${F_CPU})
+
+add_definitions(-DF_CPU=${F_CPU})
+add_definitions(-D__AVR_ATtiny2313__)
 
 # program names
 set(AVRCPP   avr-g++)
@@ -91,9 +95,9 @@ add_custom_target(hex   ALL     ${OBJCOPY} -R .eeprom -O ihex "${PROJECT_NAME}.e
 add_custom_target(eeprom        ${OBJCOPY} -j .eeprom --change-section-lma .eeprom=0 -O ihex "${PROJECT_NAME}.elf" "${PROJECT_NAME}.eeprom" DEPENDS strip)
 
 if (PROG_TYPE STREQUAL usbasp)
-    add_custom_target(flash ${AVRDUDE} -c ${PROG_TYPE} -p ${MCU} -U flash:w:${PROJECT_NAME}.hex DEPENDS hex)
+    add_custom_target(flash ${AVRDUDE} -c ${PROG_TYPE} -p ${DEVICE} -U flash:w:${PROJECT_NAME}.hex DEPENDS hex)
 elseif (PROG_TYPE STREQUAL arduino)
-    add_custom_target(flash ${AVRDUDE} -c ${PROG_TYPE} -P ${PORT} -p ${MCU} -U flash:w:${PROJECT_NAME}.hex DEPENDS hex)
+    add_custom_target(flash ${AVRDUDE} -c ${PROG_TYPE} -p ${DEVICE} -U flash:w:${PROJECT_NAME}.hex DEPENDS hex)
 endif ()
 
 

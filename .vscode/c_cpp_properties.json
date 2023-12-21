@@ -22,13 +22,14 @@
                 "${workspaceFolder}/**"
             ],
             "defines": [
-                "__AVR_ATmega328P__",
-                "F_CPU 16000000UL"
+                "__AVR_ATtiny2313__",
+                "F_CPU=16000000UL"
             ],
             "compilerPath": "C:/dev/tools/avr8-gnu-toolchain-win32_x86_64/bin/avr-g++.exe",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "${default}"
+            "intelliSenseMode": "${default}",
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
     "version": 4
