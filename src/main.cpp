@@ -8,9 +8,9 @@ int main()
     for (;;)
     {
         PORTB |= (1 << PORTB0);
-        _delay_ms(1000);
+        _delay_ms(10);
         PORTB &= ~(1 << PORTB0);
-        _delay_ms(1000);
+        _delay_ms(10);
     }
 
     return 0;

@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.5)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(PROG_TYPE usbasp)
-# set(PROG_TYPE arduino)
+# set(PROG_TYPE usbasp)
+set(PROG_TYPE avrisp)
 set(PORT      COM4)
 
 # Variables regarding the AVR chip
@@ -11,7 +11,8 @@ set(DEVICE     t2313)
 set(MCU        attiny2313)
 # set(MCU    atmega328p)
 set(F_CPU  16000000UL)
-set(BAUD   9600)
+set(BAUD   19200)
+set(FUSES  -U lfuse:w:0x64:m -U hfuse:w:0xdd:m -U efuse:w:0xff:m)
 
 add_definitions(-DF_CPU=${F_CPU})
 add_definitions(-D__AVR_ATtiny2313__)
@@ -27,10 +28,10 @@ set(AVRDUDE  avrdude)
 
 # Sets the compiler
 # Needs to come before the project function
-set(CMAKE_SYSTEM_NAME  Generic)
-set(CMAKE_CXX_COMPILER ${AVRCPP})
-set(CMAKE_C_COMPILER   ${AVRC})
-set(CMAKE_ASM_COMPILER   ${AVRC})
+set(CMAKE_SYSTEM_NAME       Generic)
+set(CMAKE_CXX_COMPILER      ${AVRCPP})
+set(CMAKE_C_COMPILER        ${AVRC})
+set(CMAKE_ASM_COMPILER      ${AVRC})
 
 project (blink C CXX ASM)
 
@@ -95,10 +96,11 @@ add_custom_target(hex   ALL     ${OBJCOPY} -R .eeprom -O ihex "${PROJECT_NAME}.e
 add_custom_target(eeprom        ${OBJCOPY} -j .eeprom --change-section-lma .eeprom=0 -O ihex "${PROJECT_NAME}.elf" "${PROJECT_NAME}.eeprom" DEPENDS strip)
 
 if (PROG_TYPE STREQUAL usbasp)
-    add_custom_target(flash ${AVRDUDE} -c ${PROG_TYPE} -p ${DEVICE} -U flash:w:${PROJECT_NAME}.hex DEPENDS hex)
+    add_custom_target(flash ${AVRDUDE} -v -c ${PROG_TYPE} -p ${DEVICE} -U flash:w:${PROJECT_NAME}.hex DEPENDS hex)
+elseif (PROG_TYPE STREQUAL avrisp)
+    add_custom_target(flash ${AVRDUDE} -v -c ${PROG_TYPE} -b ${BAUD} -p ${DEVICE} -P ${PORT} -U flash:w:${PROJECT_NAME}.hex ${FUSES} DEPENDS hex)
 elseif (PROG_TYPE STREQUAL arduino)
-    add_custom_target(flash ${AVRDUDE} -c ${PROG_TYPE} -p ${DEVICE} -U flash:w:${PROJECT_NAME}.hex DEPENDS hex)
+    add_custom_target(flash ${AVRDUDE} -v -c ${PROG_TYPE} -p ${DEVICE} -P ${PORT} -U flash:w:${PROJECT_NAME}.hex DEPENDS hex)
 endif ()
-
 
 set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES "${PROJECT_NAME}.hex;${PROJECT_NAME}.eeprom;${PROJECT_NAME}.lst")
