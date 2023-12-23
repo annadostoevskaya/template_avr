@@ -22,8 +22,7 @@
                 "${workspaceFolder}/**"
             ],
             "defines": [
-                "__AVR_ATtiny2313__",
-                "F_CPU=16000000UL"
+                "__AVR_ATtiny2313__"
             ],
             "compilerPath": "C:/dev/tools/avr8-gnu-toolchain-win32_x86_64/bin/avr-g++.exe",
             "cStandard": "c17",

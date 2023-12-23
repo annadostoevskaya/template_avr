@@ -10,7 +10,7 @@ set(PORT      COM4)
 set(DEVICE     t2313)
 set(MCU        attiny2313)
 # set(MCU    atmega328p)
-set(F_CPU  16000000UL)
+set(F_CPU  1200000UL)
 set(BAUD   19200)
 set(FUSES  -U lfuse:w:0x64:m -U hfuse:w:0xdd:m -U efuse:w:0xff:m)
 
@@ -50,24 +50,6 @@ file(GLOB SRC_FILES "${SRC_PATH}/*.cpp"
                     "${SRC_PATH}/*.s"
                     "${SRC_PATH}/*.sx"
                     "${SRC_PATH}/*.asm")
-
-set(LIB_SRC_FILES)
-set(LIB_INC_PATH)
-file(GLOB LIBRARIES "${LIB_DIR_PATH}/*")
-foreach(subdir ${LIBRARIES})
-    file(GLOB lib_files "${subdir}/*.cpp"
-                        "${subdir}/*.cc"
-                        "${subdir}/*.c"
-                        "${subdir}/*.cxx"
-                        "${subdir}/*.S"
-                        "${subdir}/*.s"
-                        "${subdir}/*.sx"
-                        "${subdir}/*.asm")
-    if(IS_DIRECTORY ${subdir})
-        list(APPEND LIB_INC_PATH  "${subdir}")
-    endif()
-    list(APPEND LIB_SRC_FILES "${lib_files}")
-endforeach()
 
 # Compiler flags
 set(CSTANDARD "-std=gnu99")
