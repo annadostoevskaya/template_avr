@@ -1,35 +1,11 @@
 {
     "configurations": [
         {
-            "name": "Win32",
-            "includePath": [
-                "${workspaceFolder}/**"
-            ],
-            "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE"
-            ],
-            "windowsSdkVersion": "10.0.22621.0",
-            "compilerPath": "cl.exe",
-            "cStandard": "c17",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "windows-msvc-x64"
-        },
-        {
             "name": "avr",
-            "includePath": [
-                "${workspaceFolder}/**"
-            ],
-            "defines": [
-                "__AVR_ATtiny2313__"
-            ],
-            "compilerPath": "C:/dev/tools/avr8-gnu-toolchain-win32_x86_64/bin/avr-g++.exe",
-            "cStandard": "c17",
-            "cppStandard": "c++17",
+            "compileCommands": "${workspaceFolder}/compile_commands.json",
             "intelliSenseMode": "${default}",
             "configurationProvider": "ms-vscode.cmake-tools"
-        }
+        },
     ],
     "version": 4
 }

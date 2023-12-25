@@ -1,4 +1,4 @@
-# Basic template for programming arduino-avr microcontroller ATmega328P. 
+# Basic template for programming arduino-avr microcontrollers.
 
 References:
     https://youtu.be/j4xw8QomkXs?si=Kzv3a7RxwSsGTn1k
