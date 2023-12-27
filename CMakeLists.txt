@@ -3,19 +3,25 @@ cmake_minimum_required(VERSION 3.5)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # set(PROG_TYPE usbasp)
+
 set(PROG_TYPE avrisp)
-set(PORT      COM4)
+if (WIN32)
+    set(PORT    COM4)
+elseif(UNIX)
+    set(PORT    /dev/ttyACM0)
+endif()
 
 # Variables regarding the AVR chip
 set(DEVICE     t2313)
 set(MCU        attiny2313)
 # set(MCU    atmega328p)
-set(F_CPU  1200000UL)
+set(F_CPU  9600000UL)
 set(BAUD   19200)
-set(FUSES  -U lfuse:w:0x64:m -U hfuse:w:0xdd:m -U efuse:w:0xff:m)
+set(FUSES  -U lfuse:w:0xe4:m -U hfuse:w:0xdd:m -U efuse:w:0xff:m)
 
 add_definitions(-DF_CPU=${F_CPU})
 add_definitions(-D__AVR_ATtiny2313__)
+add_definitions(-DBAUD=${BAUD})
 
 # program names
 set(AVRCPP   avr-g++)
@@ -53,15 +59,14 @@ file(GLOB SRC_FILES "${SRC_PATH}/*.cpp"
 
 # Compiler flags
 set(CSTANDARD "-std=gnu99")
-set(CDEBUG    "-gstabs -g -ggdb")
+set(CDEBUG    "-g -ggdb")
 set(CWARN     "-Wall -Wstrict-prototypes -Wl,--gc-sections -Wl,--relax")
 set(CTUNING   "-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections")
 set(COPT      "-Os -lm -lprintf_flt")
 set(CMCU      "-mmcu=${MCU}")
-set(CDEFS     "-DF_CPU=${F_CPU} -DBAUD=${BAUD}")
 
-set(CFLAGS   "${CMCU} ${CDEBUG} ${CDEFS} ${COPT} ${CWARN} ${CSTANDARD} ${CTUNING}")
-set(CXXFLAGS "${CMCU} ${CDEBUG} ${CDEFS} ${COPT} ${CTUNING}")
+set(CFLAGS   "${CMCU} ${CDEBUG} ${COPT} ${CWARN} ${CSTANDARD} ${CTUNING}")
+set(CXXFLAGS "${CMCU} ${CDEBUG} ${COPT} ${CTUNING}")
 
 set(CMAKE_C_FLAGS   "${CFLAGS}")
 set(CMAKE_CXX_FLAGS "${CXXFLAGS}")
