@@ -7,6 +7,7 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <avr/sleep.h>
 
 ISR (TIMER0_OVF_vect)
 {
@@ -17,7 +18,7 @@ ISR (TIMER0_OVF_vect)
 int main()
 {
     /*
-    Title: interrupt & TCNT0
+    Title: sleep_mode, interrupts & TCNT0
     F_CPU: 9.6MHz
     Prescaler: 1024
     TCNT0: 8bit Timer/Counter, Max - 255
@@ -37,7 +38,9 @@ int main()
 
     sei();
 
-    for (;;) {}
+    set_sleep_mode(SLEEP_MODE_IDLE);
+
+    for (;;) { sleep_mode(); }
 
     return 0;
 }

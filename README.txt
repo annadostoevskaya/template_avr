@@ -6,6 +6,7 @@ References:
     MCU: https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-2543-AVR-ATtiny2313_Datasheet.pdf
     USBASP, AVR Programmator: https://radiomart.kz/programmatory/680-programmator-usbasp-avr-33v5v-8471900000.html
     Setup VSCode for programming AVR: https://habr.com/ru/articles/590143/
+    Шпак Ю.А. Программирование на языке С для AVR и PIC микроконтроллеров: https://vk.com/wall-58310134_4627
     Programming AVR with Arduino [2012]: https://youtu.be/_ZL-YNOH_jA?si=RCBdT5ASH6CDwJ_t 
     Interrupts: https://youtu.be/5HgQkHzQc3o
 
