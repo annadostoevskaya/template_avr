@@ -1,4 +1,4 @@
-# Basic template for programming arduino-avr microcontrollers.
+# Basic template for programming avr microcontrollers.
 
 References:
     Getting Started: https://youtu.be/j4xw8QomkXs
@@ -11,6 +11,7 @@ References:
     Interrupts: https://youtu.be/5HgQkHzQc3o
     Oscillator: https://youtu.be/b9qD5OqPiT0
     CP2104, 6PIN Converter usb2ttl: https://radiomart.kz/konvertery/5624-6pin-konverter-usb-v-ttluart-na-cp2104-8504403008.html
+    CP2104: https://www.silabs.com/documents/public/data-sheets/cp2104.pdf
     Case CP2104: https://www.printables.com/model/48790-case-for-usbttl-converter-cp1204
     Serial: https://godbolt.org/z/hxTK9sE4d
 
