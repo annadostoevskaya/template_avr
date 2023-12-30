@@ -5,18 +5,58 @@
  * Last Modified Date: 12/27/2023 03:12:29
  */
 
+#include <stdint.h>
+#include <stdlib.h>
+
 #include <avr/io.h>
-#include <util/delay.h>
+#include <avr/interrupt.h>
+
+class UART
+{
+public:
+/*
+    void print(const char* str)
+    {
+        for (; *str != '\0'; str++)
+            write(*str);
+    }
+*/
+    void write(char c)
+    {
+        while (!(UCSRA & _BV(UDRE)))
+            ;;
+
+        TXB = c;
+    }
+
+    uint8_t read()
+    {
+        while (!(UCSRA & _BV(RXC)))
+            ;;
+
+        return RXB;
+    }
+};
+
+const int16_t g_UBRR = (F_CPU / (16 * BAUD)) - 1;
+
+UART g_UART;
+
+// ISR(USART_RX_vect) { }
 
 int main()
 {
+    UBRRL = g_UBRR;
+    UBRRH = g_UBRR >> 8;
+    UCSRB |= _BV(TXEN) | _BV(RXEN);
+    UCSRC = _BV(UCSZ1) | _BV(UCSZ0);
 
-    DDRB |= _BV(DDB0);
+    // UCSRC |= _BV(RXCIE);
+    // sei();
 
     for (;;)
     {
-        PORTB ^= _BV(PORTB0);
-        _delay_ms(1000.0f);
+        g_UART.write(g_UART.read());
     }
 
     return 0;
