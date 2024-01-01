@@ -14,6 +14,10 @@ References:
     CP2104: https://www.silabs.com/documents/public/data-sheets/cp2104.pdf
     Case CP2104: https://www.printables.com/model/48790-case-for-usbttl-converter-cp1204
     Serial: https://godbolt.org/z/hxTK9sE4d
+    UART Transmit: https://youtu.be/LFdndn_HB64
+    UART Receive: https://youtu.be/umyJrJN7TyQ
+    Modulus operator, caution: https://embeddedgurus.com/stack-overflow/2011/02/efficient-c-tip-13-use-the-modulus-operator-with-caution/
+
 
 TODO:
     launch.json for vscode and gdb debugger.
