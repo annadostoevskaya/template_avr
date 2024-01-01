@@ -27,7 +27,7 @@ int uart_putchar(char c, FILE *stream)
     return 0;
 }
 
-FILE g_UART_Stream = {
+FILE g_UART_OStream = { // NOTE(annad): Obviously, stdio.h only for debugging purpose.
     NULL,
     0,
     _FDEV_SETUP_RW,
@@ -38,13 +38,13 @@ FILE g_UART_Stream = {
     0
 }; 
 
-RingBuffer<16> g_UART_Buffer;
+RingBuffer<16> g_UART_IBuffer;
 
-ISR(USART_RX_vect) { g_UART_Buffer.write(RXB); }
+ISR(USART_RX_vect) { g_UART_IBuffer.write(RXB); }
 
 int main()
 {
-    stdout = &g_UART_Stream;
+    stdout = &g_UART_OStream;
 
     set_sleep_mode(SLEEP_MODE_IDLE);
 
@@ -59,20 +59,7 @@ int main()
     {
         sleep_mode();
 
-        while (g_UART_Buffer.available())
-        {
-            if (g_UART_Buffer.read() == 'd')
-            {
-                for (size_t i = 0; i < sizeof(g_UART_Buffer.m_Buffer) / sizeof(*g_UART_Buffer.m_Buffer); i += 1)
-                {
-                    if (i % 8 == 0) putchar('\n');
-                    printf("%3X ", g_UART_Buffer.m_Buffer[i]);
-                }
-                putchar('\n');
-            }
 
-            printf("%d:%d\n", g_UART_Buffer.m_Head, g_UART_Buffer.m_Tail);
-        }
     }
     
     return 0;
