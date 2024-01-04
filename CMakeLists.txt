@@ -2,26 +2,23 @@ cmake_minimum_required(VERSION 3.5)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# set(PROG_TYPE usbasp)
-
-set(PROG_TYPE avrisp)
-if (WIN32)
-    set(PORT    COM4)
-elseif(UNIX)
-    set(PORT    /dev/ttyACM0)
-endif()
-
 # Variables regarding the AVR chip
-set(DEVICE     t2313)
-set(MCU        attiny2313)
-# set(MCU    atmega328p)
-set(F_CPU  9600000UL)
-set(BAUD   19200)
-set(FUSES  -U lfuse:w:0xe4:m -U hfuse:w:0xdd:m -U efuse:w:0xff:m)
+set(AVRDUDE_PROGTYPE    usbasp)
+if (WIN32)
+    set(AVRDUDE_PORT    COM3)
+elseif(UNIX)
+    set(AVRDUDE_PORT    /dev/ttyACM0)
+endif()
+set(AVRDUDE_DEVICE      t2313)
+set(AVRDUDE_BAUD        19200)
+set(AVRDUDE_FUSES       -U lfuse:w:0xde:m -U hfuse:w:0xdf:m -U efuse:w:0xff:m)
 
+set(MCU         attiny2313)
+set(F_CPU       16E6)
+set(UART_BAUD   9600UL)
 add_definitions(-DF_CPU=${F_CPU})
 add_definitions(-D__AVR_ATtiny2313__)
-add_definitions(-DBAUD=${BAUD})
+add_definitions(-DBAUD=${UART_BAUD})
 
 # program names
 set(AVRCPP   avr-g++)
@@ -60,7 +57,7 @@ file(GLOB SRC_FILES "${SRC_PATH}/*.cpp"
 # Compiler flags
 set(CSTANDARD "-std=gnu99")
 set(CDEBUG    "-g -ggdb")
-set(CWARN     "-Wall -Wstrict-prototypes -Wl,--gc-sections -Wl,--relax")
+set(CWARN     "-Wall -Wextra -Werror -Wstrict-prototypes -Wl,--gc-sections -Wl,--relax")
 set(CTUNING   "-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections")
 set(COPT      "-Os -lm -lprintf_flt")
 set(CMCU      "-mmcu=${MCU}")
@@ -81,13 +78,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}.el
 add_custom_target(strip ALL     ${AVRSTRIP} "${PROJECT_NAME}.elf" DEPENDS ${PROJECT_NAME})
 add_custom_target(hex   ALL     ${OBJCOPY} -R .eeprom -O ihex "${PROJECT_NAME}.elf" "${PROJECT_NAME}.hex" DEPENDS strip)
 add_custom_target(eeprom        ${OBJCOPY} -j .eeprom --change-section-lma .eeprom=0 -O ihex "${PROJECT_NAME}.elf" "${PROJECT_NAME}.eeprom" DEPENDS strip)
-
-if (PROG_TYPE STREQUAL usbasp)
-    add_custom_target(flash ${AVRDUDE} -v -c ${PROG_TYPE} -p ${DEVICE} -U flash:w:${PROJECT_NAME}.hex DEPENDS hex)
-elseif (PROG_TYPE STREQUAL avrisp)
-    add_custom_target(flash ${AVRDUDE} -v -c ${PROG_TYPE} -b ${BAUD} -p ${DEVICE} -P ${PORT} -U flash:w:${PROJECT_NAME}.hex ${FUSES} DEPENDS hex)
-elseif (PROG_TYPE STREQUAL arduino)
-    add_custom_target(flash ${AVRDUDE} -v -c ${PROG_TYPE} -p ${DEVICE} -P ${PORT} -U flash:w:${PROJECT_NAME}.hex DEPENDS hex)
-endif ()
+add_custom_target(flash         ${AVRDUDE} -v -c ${AVRDUDE_PROGTYPE} -b ${AVRDUDE_BAUD} -p ${AVRDUDE_DEVICE} 
+                                           -P ${AVRDUDE_PORT} -U flash:w:${PROJECT_NAME}.hex ${AVRDUDE_FUSES} DEPENDS hex)
 
 set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES "${PROJECT_NAME}.hex;${PROJECT_NAME}.eeprom;${PROJECT_NAME}.lst")
