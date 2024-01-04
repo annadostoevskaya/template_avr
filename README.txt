@@ -20,4 +20,6 @@ References:
 
 
 TODO:
-    launch.json for vscode and gdb debugger.
+    JTAG, gdb vscode/launch.json debuging.
+    UART/UDRE register, OutputBuffer.
+    CI/CD, GitAction, workflow

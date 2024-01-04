@@ -5,7 +5,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Variables regarding the AVR chip
 set(AVRDUDE_PROGTYPE    avrisp)
 if (WIN32)
-    set(AVRDUDE_PORT    COM4)
+    set(AVRDUDE_PORT    COM3)
 elseif(UNIX)
     set(AVRDUDE_PORT    /dev/ttyACM0)
 endif()
@@ -57,7 +57,7 @@ file(GLOB SRC_FILES "${SRC_PATH}/*.cpp"
 # Compiler flags
 set(CSTANDARD "-std=gnu99")
 set(CDEBUG    "-g -ggdb")
-set(CWARN     "-Wall -Wstrict-prototypes -Wl,--gc-sections -Wl,--relax")
+set(CWARN     "-Wall -Wextra -Werror -Wstrict-prototypes -Wl,--gc-sections -Wl,--relax")
 set(CTUNING   "-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums -ffunction-sections -fdata-sections")
 set(COPT      "-Os -lm -lprintf_flt")
 set(CMCU      "-mmcu=${MCU}")

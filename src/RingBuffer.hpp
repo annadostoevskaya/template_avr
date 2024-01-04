@@ -1,15 +1,15 @@
 /**
- * File: RingBuffer.h
+ * File: RingBuffer.hpp
  * Author: github.com/annadostoevskaya
- * Date: 01/01/2024 07:50:05
- * Last Modified Date: 01/01/2024 07:50:07
+ * Date: 01/04/2024 07:50:05
+ * Last Modified Date: 01/04/2024 07:50:07
  */
 #pragma once
 #define __need_size_t
 #include <stddef.h>
 #include <stdint.h>
 
-template <size_t Sz = 32>
+template <size_t Sz>
 class RingBuffer
 {
 private:
